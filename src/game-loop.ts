@@ -13,26 +13,20 @@ export function tick(world: World, deltaMs: number) {
   deathSystem(world);
 }
 
-export function advanceTime(world: World, realDtMs: number) {
+export function simulate(world: World, realDtMs: number) {
   const time = getSingleton(world, TimeSingleton);
+  let ticks = 0;
 
   time.accumulatorMs += realDtMs;
 
   while (time.accumulatorMs >= TICK_MS) {
     tick(world, TICK_MS);
     time.accumulatorMs -= TICK_MS;
+
+    ticks++;
+    if (ticks > MAX_TICKS_PER_CALL) {
+      time.accumulatorMs = 0;
+      break;
+    }
   }
 }
-
-// export function simulate(world: World, deltaMs: number) {
-//   let remaining = deltaMs;
-//   let ticks = 0;
-
-//   while (remaining >= TICK_MS) {
-//     tick(world, TICK_MS);
-//     remaining -= TICK_MS;
-
-//     ticks++;
-//     if (ticks > MAX_TICKS_PER_CALL) break;
-//   }
-// }
