@@ -1,4 +1,4 @@
-import { ProductionComponent, ResourceComponent } from '../components';
+import { ProductionComponent, RESOURCES_PRECISION, ResourceComponent } from '../components';
 import { World } from '../types';
 
 export function productionSystem(world: World, dt: number) {
@@ -6,6 +6,8 @@ export function productionSystem(world: World, dt: number) {
     const resource = ResourceComponent.store.get(production.target);
     if (!resource) continue;
 
-    resource.amount += production.ratePerSecond * (dt / 1000);
+    const delta = Math.round(production.ratePerSecond * (dt / 1000) * RESOURCES_PRECISION);
+
+    resource.amount += delta;
   }
 }
