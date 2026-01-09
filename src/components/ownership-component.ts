@@ -1,7 +1,8 @@
 import { createComponent } from '../lib/component-utils';
+import { Entity } from '../types';
 
 export type OwnedBy = {
-  user: number; // entityId пользователя
+  user: Entity; // entityId пользователя
 };
 
 export const OwnedByComponent = createComponent<OwnedBy>('OwnedBy');

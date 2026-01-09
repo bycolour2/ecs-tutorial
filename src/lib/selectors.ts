@@ -8,10 +8,10 @@ import {
   UpgradeComponent,
   getUpgradeCost,
 } from '../components';
-import { World } from '../types';
+import { Entity, World } from '../types';
 import { query } from './component-utils';
 
-export function selectUserResources(world: World, user: number) {
+export function selectUserResources(world: World, user: Entity) {
   const resources = query(world, ResourceComponent, OwnedByComponent);
 
   return resources
@@ -22,7 +22,7 @@ export function selectUserResources(world: World, user: number) {
     }));
 }
 
-export function selectUserGenerators(world: World, user: number) {
+export function selectUserGenerators(world: World, user: Entity) {
   const gens = query(world, ResourceGeneratorComponent, OwnedByComponent);
 
   return gens
@@ -33,7 +33,7 @@ export function selectUserGenerators(world: World, user: number) {
     }));
 }
 
-export function getProductionMultiplier(world: World, user: number, resource: string) {
+export function getProductionMultiplier(world: World, user: Entity, resource: string) {
   const modifiers = query(world, ModifierComponent, OwnedByComponent);
 
   let bonus = 0;
@@ -49,7 +49,7 @@ export function getProductionMultiplier(world: World, user: number, resource: st
   return Math.max(0, 1 + bonus);
 }
 
-export function selectUserUpgrades(world: World, user: number) {
+export function selectUserUpgrades(world: World, user: Entity) {
   const mods = query(world, ModifierComponent, OwnedByComponent);
 
   return mods
@@ -61,7 +61,7 @@ export function selectUserUpgrades(world: World, user: number) {
     }));
 }
 
-export function selectAvailableUpgrades(world: World, user: number) {
+export function selectAvailableUpgrades(world: World, user: Entity) {
   const blueprints = query(world, UpgradeComponent, ModifierComponent, CostComponent);
 
   return blueprints.map(([, upgrade, mod, cost]) => {
@@ -79,7 +79,7 @@ export function selectAvailableUpgrades(world: World, user: number) {
   });
 }
 
-export function countAppliedUpgrades(world: World, user: number, upgradeId: string) {
+export function countAppliedUpgrades(world: World, user: Entity, upgradeId: string) {
   const applied = query(world, ModifierComponent, OwnedByComponent, UpgradeComponent);
 
   return applied.filter(([, , owner, upgrade]) => owner.user === user && upgrade.id === upgradeId)
