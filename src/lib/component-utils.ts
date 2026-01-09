@@ -29,38 +29,47 @@ export function removeAllComponents(world: World, entity: Entity) {
   }
 }
 
-export function query<C1, C2>(
+export type QueryResult<Cs extends readonly Component<any>[]> = {
+  [K in keyof Cs]: Cs[K] extends Component<infer T> ? T : never;
+};
+
+export function query<Cs extends readonly Component<any>[]>(
   world: World,
-  c1: Component<C1>,
-  c2: Component<C2>,
-): Array<[Entity, C1, C2]> {
-  const result: Array<[Entity, C1, C2]> = [];
+  ...components: Cs
+): Array<[Entity, ...QueryResult<Cs>]> {
+  if (components.length === 0) return [];
 
-  for (const [entity, value1] of c1.store) {
-    const value2 = c2.store.get(entity);
-    if (!value2) continue;
+  // 1. Берём компонент с минимальным store
+  let primary = components[0];
 
-    result.push([entity, value1, value2]);
+  for (let i = 1; i < components.length; i++) {
+    if (components[i].store.size < primary.store.size) {
+      primary = components[i];
+    }
   }
 
-  return result;
-}
+  const result: Array<[Entity, ...QueryResult<Cs>]> = [];
 
-export function query3<C1, C2, C3>(
-  world: World,
-  c1: Component<C1>,
-  c2: Component<C2>,
-  c3: Component<C3>,
-): Array<[Entity, C1, C2, C3]> {
-  const result: Array<[Entity, C1, C2, C3]> = [];
+  // 2. Итерируемся по минимальному
+  for (const [entity, primaryValue] of primary.store) {
+    const values: any[] = [primaryValue];
+    let matched = true;
 
-  for (const [entity, value1] of c1.store) {
-    const value2 = c2.store.get(entity);
-    if (!value2) continue;
-    const value3 = c3.store.get(entity);
-    if (!value3) continue;
+    for (const component of components) {
+      if (component === primary) continue;
 
-    result.push([entity, value1, value2, value3]);
+      const value = component.store.get(entity);
+      if (value === undefined) {
+        matched = false;
+        break;
+      }
+
+      values.push(value);
+    }
+
+    if (!matched) continue;
+
+    result.push([entity, ...values] as unknown as [Entity, ...QueryResult<Cs>]);
   }
 
   return result;

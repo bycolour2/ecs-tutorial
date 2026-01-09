@@ -1,13 +1,32 @@
-import { ProductionComponent, RESOURCES_PRECISION, ResourceComponent } from '../components';
+import {
+  OwnedByComponent,
+  RESOURCES_PRECISION,
+  ResourceComponent,
+  ResourceGeneratorComponent,
+} from '../components';
+import { query } from '../lib/component-utils';
 import { World } from '../types';
 
-export function productionSystem(world: World, dt: number) {
-  for (const [, production] of ProductionComponent.store) {
-    const resource = ResourceComponent.store.get(production.target);
-    if (!resource) continue;
+export function productionSystem(world: World, deltaMs: number) {
+  const generators = query(world, ResourceGeneratorComponent, OwnedByComponent);
+  const resources = query(world, ResourceComponent, OwnedByComponent);
 
-    const delta = Math.round(production.ratePerSecond * (dt / 1000) * RESOURCES_PRECISION);
+  for (const [, gen, genOwner] of generators) {
+    for (const [, res, resOwner] of resources) {
+      // разные пользователи — пропускаем
+      if (genOwner.user !== resOwner.user) continue;
 
-    resource.amount += delta;
+      // другой тип ресурса — пропускаем
+      if (res.type !== gen.resource) continue;
+
+      const produced = (gen.ratePerSecond * deltaMs * RESOURCES_PRECISION) / 1000;
+
+      res.amount += produced;
+
+      if (res.cap !== undefined) {
+        const cap = res.cap * RESOURCES_PRECISION;
+        if (res.amount > cap) res.amount = cap;
+      }
+    }
   }
 }
