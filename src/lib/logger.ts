@@ -1,10 +1,14 @@
 import {
+  CostComponent,
   DamageComponent,
   HealthComponent,
+  LimitComponent,
+  ModifierComponent,
   OwnedByComponent,
   PositionComponent,
   ResourceComponent,
   ResourceGeneratorComponent,
+  UpgradeComponent,
   UserComponent,
   VelocityComponent,
   RESOURCES_PRECISION,
@@ -32,7 +36,7 @@ export function logWorldState(world: World): void {
   const time = getSingleton(world, TimeSingleton);
 
   console.log('================ WORLD STATE ================');
-  
+
   // ---------- Time Singleton ----------
   console.log('Time:');
   console.log(`  nowMs: ${time.nowMs} (${formatTime(time.nowMs)})`);
@@ -59,9 +63,7 @@ export function logWorldState(world: World): void {
     for (const [entity, resource] of ResourceComponent.store) {
       const amount = resource.amount / RESOURCES_PRECISION;
       const capStr = resource.cap !== undefined ? ` / ${resource.cap / RESOURCES_PRECISION}` : '';
-      console.log(
-        `  [${entity}] ${resource.type.toUpperCase()}: ${formatNumber(amount)}${capStr}`,
-      );
+      console.log(`  [${entity}] ${resource.type.toUpperCase()}: ${formatNumber(amount)}${capStr}`);
     }
   }
   console.log('');
@@ -129,20 +131,89 @@ export function logWorldState(world: World): void {
     console.log('  (none)');
   } else {
     for (const [entity, velocity] of VelocityComponent.store) {
+      console.log(`  [${entity}] (${formatNumber(velocity.dx)}, ${formatNumber(velocity.dy)})`);
+    }
+  }
+  console.log('');
+
+  // ---------- Cost ----------
+  console.log('Cost:');
+  if (CostComponent.store.size === 0) {
+    console.log('  (none)');
+  } else {
+    for (const [entity, cost] of CostComponent.store) {
+      const base = cost.base / RESOURCES_PRECISION;
       console.log(
-        `  [${entity}] (${formatNumber(velocity.dx)}, ${formatNumber(velocity.dy)})`,
+        `  [${entity}] ${cost.resource}: base=${formatNumber(base)}, growth=${formatNumber(
+          cost.growth,
+        )}`,
       );
     }
   }
   console.log('');
 
-  // ---------- Summary ----------
-  const totalEntities = new Set<number>();
-  for (const [, component] of world.components) {
-    for (const entity of component.store.keys()) {
-      totalEntities.add(entity);
+  // ---------- Limit ----------
+  console.log('Limit:');
+  if (LimitComponent.store.size === 0) {
+    console.log('  (none)');
+  } else {
+    for (const [entity, limit] of LimitComponent.store) {
+      console.log(`  [${entity}] max: ${limit.max}`);
     }
   }
-  console.log(`Total Entities: ${totalEntities.size}`);
+  console.log('');
+
+  // ---------- Upgrade ----------
+  console.log('Upgrade:');
+  if (UpgradeComponent.store.size === 0) {
+    console.log('  (none)');
+  } else {
+    for (const [entity, upgrade] of UpgradeComponent.store) {
+      console.log(`  [${entity}] id: ${upgrade.id}`);
+    }
+  }
+  console.log('');
+
+  // ---------- Modifier ----------
+  console.log('Modifier:');
+  if (ModifierComponent.store.size === 0) {
+    console.log('  (none)');
+  } else {
+    for (const [entity, modifier] of ModifierComponent.store) {
+      const resourceStr = modifier.resource ? ` (${modifier.resource})` : '';
+      console.log(`  [${entity}] ${modifier.stat}${resourceStr}: ${formatNumber(modifier.value)}x`);
+    }
+  }
+  console.log('');
+
+  // ---------- All Entities ----------
+  const allEntities = new Set<number>();
+  const entityComponents = new Map<number, string[]>();
+
+  for (const [, component] of world.components) {
+    for (const entity of component.store.keys()) {
+      allEntities.add(entity);
+      if (!entityComponents.has(entity)) {
+        entityComponents.set(entity, []);
+      }
+      entityComponents.get(entity)!.push(component.name);
+    }
+  }
+
+  console.log('All Entities:');
+  if (allEntities.size === 0) {
+    console.log('  (none)');
+  } else {
+    const sortedEntities = Array.from(allEntities).sort((a, b) => a - b);
+    for (const entity of sortedEntities) {
+      const components = entityComponents.get(entity) || [];
+      const componentsStr = components.sort().join(', ');
+      console.log(`  [${entity}] components: ${componentsStr}`);
+    }
+  }
+  console.log('');
+
+  // ---------- Summary ----------
+  console.log(`Total Entities: ${allEntities.size}`);
   console.log('=============================================');
 }

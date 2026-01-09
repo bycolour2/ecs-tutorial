@@ -6,6 +6,7 @@ import {
   ResourceComponent,
   ResourceGeneratorComponent,
   UpgradeComponent,
+  getUpgradeCost,
 } from '../components';
 import { World } from '../types';
 import { query } from './component-utils';
@@ -35,17 +36,17 @@ export function selectUserGenerators(world: World, user: number) {
 export function getProductionMultiplier(world: World, user: number, resource: string) {
   const modifiers = query(world, ModifierComponent, OwnedByComponent);
 
-  let multiplier = 1;
+  let bonus = 0;
 
   for (const [, mod, owner] of modifiers) {
     if (owner.user !== user) continue;
     if (mod.stat !== 'production') continue;
     if (mod.resource && mod.resource !== resource) continue;
 
-    multiplier *= mod.multiplier;
+    bonus += mod.value;
   }
 
-  return multiplier;
+  return Math.max(0, 1 + bonus);
 }
 
 export function selectUserUpgrades(world: World, user: number) {
@@ -56,19 +57,31 @@ export function selectUserUpgrades(world: World, user: number) {
     .map(([, mod]) => ({
       stat: mod.stat,
       resource: mod.resource ?? 'all',
-      multiplier: mod.multiplier,
+      multiplier: mod.value,
     }));
 }
 
-export function selectAvailableUpgrades(world: World) {
-  const upgrades = query(world, UpgradeComponent, ModifierComponent, CostComponent);
+export function selectAvailableUpgrades(world: World, user: number) {
+  const blueprints = query(world, UpgradeComponent, ModifierComponent, CostComponent);
 
-  return upgrades.map(([, upg, mod, cost]) => ({
-    id: upg.id,
-    effect: mod,
-    cost: {
-      resource: cost.resource,
-      amount: cost.amount / RESOURCES_PRECISION,
-    },
-  }));
+  return blueprints.map(([, upgrade, mod, cost]) => {
+    const applied = countAppliedUpgrades(world, user, upgrade.id);
+
+    const level = applied + 1;
+    const price = getUpgradeCost(cost, level);
+
+    return {
+      id: upgrade.id,
+      effect: mod,
+      level: applied,
+      nextCost: price / RESOURCES_PRECISION,
+    };
+  });
+}
+
+export function countAppliedUpgrades(world: World, user: number, upgradeId: string) {
+  const applied = query(world, ModifierComponent, OwnedByComponent, UpgradeComponent);
+
+  return applied.filter(([, , owner, upgrade]) => owner.user === user && upgrade.id === upgradeId)
+    .length;
 }
