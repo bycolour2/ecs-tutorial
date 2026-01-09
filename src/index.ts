@@ -1,7 +1,13 @@
-import { ProductionComponent, ResourceComponent } from './components';
+import {
+  OwnedByComponent,
+  ResourceComponent,
+  ResourceGeneratorComponent,
+  UserComponent,
+} from './components';
 import { simulate } from './game-loop';
 import { addComponent, registerComponent } from './lib/component-utils';
-import { getSingleton, registerSingleton } from './lib/singleton-utils';
+import { logWorldState } from './lib/logger';
+import { registerSingleton } from './lib/singleton-utils';
 import { TimeSingleton } from './singletons';
 import { Component, Entity, World } from './types';
 
@@ -28,51 +34,54 @@ export function createWorld(components?: Component<any>[]): World {
 const world = createWorld();
 
 registerComponent(world, ResourceComponent);
-registerComponent(world, ProductionComponent);
+registerComponent(world, ResourceGeneratorComponent);
 registerSingleton(world, TimeSingleton);
 
-const entity = createEntity();
-const resourceEntity = createEntity();
+const userEntity = createEntity();
+addComponent(world, userEntity, UserComponent, {
+  id: 'player-1',
+});
 
-addComponent(world, resourceEntity, ResourceComponent, {
+const goldEntity = createEntity();
+addComponent(world, goldEntity, ResourceComponent, {
+  type: 'gold',
   amount: 0,
+  cap: 5000,
+});
+addComponent(world, goldEntity, OwnedByComponent, {
+  user: userEntity,
 });
 
-addComponent(world, entity, ProductionComponent, {
+const woodEntity = createEntity();
+addComponent(world, woodEntity, ResourceComponent, {
+  type: 'wood',
+  amount: 0,
+  cap: 2000,
+});
+addComponent(world, woodEntity, OwnedByComponent, {
+  user: userEntity,
+});
+
+const minerEntity = createEntity();
+addComponent(world, minerEntity, ResourceGeneratorComponent, {
+  resource: 'gold',
+  ratePerSecond: 5,
+});
+addComponent(world, minerEntity, OwnedByComponent, {
+  user: userEntity,
+});
+
+const sawmillEntity = createEntity();
+addComponent(world, sawmillEntity, ResourceGeneratorComponent, {
+  resource: 'wood',
   ratePerSecond: 2,
-  target: resourceEntity,
+});
+addComponent(world, sawmillEntity, OwnedByComponent, {
+  user: userEntity,
 });
 
-console.log(
-  getSingleton(world, TimeSingleton),
-  ProductionComponent.store.get(entity),
-  ResourceComponent.store.get(resourceEntity),
-);
+logWorldState(world);
 
-simulate(world, 250);
-console.log(
-  getSingleton(world, TimeSingleton),
-  ProductionComponent.store.get(entity),
-  ResourceComponent.store.get(resourceEntity),
-);
+simulate(world, 2000);
 
-simulate(world, 750);
-console.log(
-  getSingleton(world, TimeSingleton),
-  ProductionComponent.store.get(entity),
-  ResourceComponent.store.get(resourceEntity),
-);
-
-simulate(world, 5000);
-console.log(
-  getSingleton(world, TimeSingleton),
-  ProductionComponent.store.get(entity),
-  ResourceComponent.store.get(resourceEntity),
-);
-
-simulate(world, 1000 * 60 * 60 * 24);
-console.log(
-  getSingleton(world, TimeSingleton),
-  ProductionComponent.store.get(entity),
-  ResourceComponent.store.get(resourceEntity),
-);
+logWorldState(world);
