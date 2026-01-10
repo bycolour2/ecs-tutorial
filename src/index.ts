@@ -8,14 +8,14 @@ import {
   ResourceGeneratorComponent,
   UpgradeComponent,
   UserComponent,
-} from './components';
-import { simulate } from './game-loop';
-import { addComponent, registerComponent } from './lib/component-utils';
-import { logWorldState } from './lib/logger';
-import { registerSingleton } from './lib/singleton-utils';
-import { TimeSingleton } from './singletons';
-import { purchaseUpgrade } from './systems';
-import { Component, Entity, World } from './types';
+} from '~/components';
+import { simulate } from '~/game-loop';
+import { addComponent, registerComponent } from '~/lib/component-utils';
+import { logWorldState } from '~/lib/logger';
+import { registerSingleton } from '~/lib/singleton-utils';
+import { TimeSingleton } from '~/singletons';
+import { purchaseUpgrade } from '~/systems';
+import { Component, Entity, World } from '~/types';
 
 let nextEntityId = 1;
 

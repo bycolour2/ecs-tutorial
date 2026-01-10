@@ -1,4 +1,4 @@
-import { Component, Entity, World } from '../types';
+import { Component, Entity, World } from '~/types';
 
 export function createComponent<T>(name: string): Component<T> {
   return {

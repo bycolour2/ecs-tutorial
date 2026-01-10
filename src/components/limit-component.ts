@@ -1,4 +1,4 @@
-import { createComponent } from '../lib/component-utils';
+import { createComponent } from '~/lib/component-utils';
 
 export type Limit = {
   max: number;

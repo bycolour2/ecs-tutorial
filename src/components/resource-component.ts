@@ -1,4 +1,4 @@
-import { createComponent } from '../lib/component-utils';
+import { createComponent } from '~/lib/component-utils';
 
 export const RESOURCES_PRECISION = 1000;
 

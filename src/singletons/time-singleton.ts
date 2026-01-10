@@ -1,4 +1,4 @@
-import { Singleton } from '../types';
+import { Singleton } from '~/types';
 
 export type Time = {
   nowMs: number;

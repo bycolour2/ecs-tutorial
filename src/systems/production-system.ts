@@ -4,9 +4,9 @@ import {
   ResourceComponent,
   ResourceGeneratorComponent,
 } from '../components';
-import { query } from '../lib/component-utils';
+import { query } from '~/lib/component-utils';
 import { getProductionMultiplier } from '../lib/selectors';
-import { World } from '../types';
+import { World } from '~/types';
 
 export function productionSystem(world: World, deltaMs: number) {
   const generators = query(world, ResourceGeneratorComponent, OwnedByComponent);

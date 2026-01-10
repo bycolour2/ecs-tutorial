@@ -1,5 +1,5 @@
-import { createComponent } from '../lib/component-utils';
-import { Entity } from '../types';
+import { Entity } from '~/types';
+import { createComponent } from '~/lib/component-utils';
 
 export type OwnedBy = {
   user: Entity; // entityId пользователя

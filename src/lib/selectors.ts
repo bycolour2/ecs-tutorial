@@ -7,8 +7,8 @@ import {
   ResourceGeneratorComponent,
   UpgradeComponent,
   getUpgradeCost,
-} from '../components';
-import { Entity, World } from '../types';
+} from '~/components';
+import { Entity, World } from '~/types';
 import { query } from './component-utils';
 
 export function selectUserResources(world: World, user: Entity) {

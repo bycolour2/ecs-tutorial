@@ -1,4 +1,4 @@
-import { Singleton, World } from '../types';
+import { Singleton, World } from '~/types';
 
 export function registerSingleton<T>(world: World, singleton: Singleton<T>) {
   world.singletons.set(singleton.name, structuredClone(singleton.initial));

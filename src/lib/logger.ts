@@ -1,20 +1,16 @@
 import {
   CostComponent,
-  DamageComponent,
-  HealthComponent,
   LimitComponent,
   ModifierComponent,
   OwnedByComponent,
-  PositionComponent,
   ResourceComponent,
   ResourceGeneratorComponent,
   UpgradeComponent,
   UserComponent,
-  VelocityComponent,
   RESOURCES_PRECISION,
-} from '../components';
-import { TimeSingleton } from '../singletons';
-import { World } from '../types';
+} from '~/components';
+import { TimeSingleton } from '~/singletons';
+import { World } from '~/types';
 import { getProductionMultiplier } from './selectors';
 import { getSingleton } from './singleton-utils';
 
@@ -103,50 +99,6 @@ export function logWorldState(world: World): void {
   } else {
     for (const [entity, ownedBy] of OwnedByComponent.store) {
       console.log(`  [${entity}] owned by user entity [${ownedBy.user}]`);
-    }
-  }
-  console.log('');
-
-  // ---------- Health ----------
-  console.log('Health:');
-  if (HealthComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, health] of HealthComponent.store) {
-      console.log(`  [${entity}] ${formatNumber(health.value)} / ${formatNumber(health.max)}`);
-    }
-  }
-  console.log('');
-
-  // ---------- Damage ----------
-  console.log('Damage:');
-  if (DamageComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, damage] of DamageComponent.store) {
-      console.log(`  [${entity}] amount: ${formatNumber(damage.amount)}`);
-    }
-  }
-  console.log('');
-
-  // ---------- Position ----------
-  console.log('Position:');
-  if (PositionComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, position] of PositionComponent.store) {
-      console.log(`  [${entity}] (${formatNumber(position.x)}, ${formatNumber(position.y)})`);
-    }
-  }
-  console.log('');
-
-  // ---------- Velocity ----------
-  console.log('Velocity:');
-  if (VelocityComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, velocity] of VelocityComponent.store) {
-      console.log(`  [${entity}] (${formatNumber(velocity.dx)}, ${formatNumber(velocity.dy)})`);
     }
   }
   console.log('');

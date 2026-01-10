@@ -8,9 +8,9 @@ import {
   UpgradeComponent,
   getUpgradeCost,
 } from '../components';
-import { addComponent, query } from '../lib/component-utils';
+import { addComponent, query } from '~/lib/component-utils';
 import { countAppliedUpgrades } from '../lib/selectors';
-import { Entity, World } from '../types';
+import { Entity, World } from '~/types';
 
 export function purchaseUpgrade(world: World, user: Entity, blueprint: Entity): boolean {
   const upgrade = UpgradeComponent.store.get(blueprint)!;
