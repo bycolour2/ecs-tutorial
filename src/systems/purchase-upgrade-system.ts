@@ -10,21 +10,20 @@ import {
 } from '../components';
 import { addComponent, query } from '../lib/component-utils';
 import { countAppliedUpgrades } from '../lib/selectors';
-import { World } from '../types';
+import { Entity, World } from '../types';
 
-export function purchaseUpgradeSystem(world: World, user: number, blueprint: number): boolean {
+export function purchaseUpgrade(world: World, user: Entity, blueprint: Entity): boolean {
   const upgrade = UpgradeComponent.store.get(blueprint)!;
   const cost = CostComponent.store.get(blueprint)!;
   const limit = LimitComponent.store.get(blueprint);
 
-  const appliedCount = countAppliedUpgrades(world, user, upgrade.id);
+  const level = countAppliedUpgrades(world, user, upgrade.id);
 
   // лимит
-  if (limit && appliedCount >= limit.max) {
+  if (limit && level >= limit.max) {
     return false;
   }
 
-  const level = appliedCount + 1;
   const price = getUpgradeCost(cost, level);
 
   // ищем ресурс пользователя

@@ -15,6 +15,7 @@ import {
 } from '../components';
 import { TimeSingleton } from '../singletons';
 import { World } from '../types';
+import { getProductionMultiplier } from './selectors';
 import { getSingleton } from './singleton-utils';
 
 function formatNumber(value: number, precision = 2): string {
@@ -74,9 +75,23 @@ export function logWorldState(world: World): void {
     console.log('  (none)');
   } else {
     for (const [entity, generator] of ResourceGeneratorComponent.store) {
-      console.log(
-        `  [${entity}] -> ${generator.resource} @ ${formatNumber(generator.ratePerSecond)}/sec`,
-      );
+      const owner = OwnedByComponent.store.get(entity);
+      if (owner) {
+        const multiplier = getProductionMultiplier(world, owner.user, generator.resource);
+        const effectiveRate = generator.ratePerSecond * multiplier;
+        const multiplierStr = multiplier !== 1 ? ` (x${formatNumber(multiplier)})` : '';
+        console.log(
+          `  [${entity}] -> ${generator.resource} @ ${formatNumber(
+            generator.ratePerSecond,
+          )}/sec${multiplierStr} = ${formatNumber(effectiveRate)}/sec`,
+        );
+      } else {
+        console.log(
+          `  [${entity}] -> ${generator.resource} @ ${formatNumber(
+            generator.ratePerSecond,
+          )}/sec (no owner)`,
+        );
+      }
     }
   }
   console.log('');
@@ -180,8 +195,14 @@ export function logWorldState(world: World): void {
     console.log('  (none)');
   } else {
     for (const [entity, modifier] of ModifierComponent.store) {
-      const resourceStr = modifier.resource ? ` (${modifier.resource})` : '';
-      console.log(`  [${entity}] ${modifier.stat}${resourceStr}: ${formatNumber(modifier.value)}x`);
+      const owner = OwnedByComponent.store.get(entity);
+      const resourceStr = modifier.resource ? ` (${modifier.resource})` : ' (all)';
+      const statusStr = owner ? ` [ACTIVE - user: ${owner.user}]` : ' [blueprint]';
+      console.log(
+        `  [${entity}] ${modifier.stat}${resourceStr}: ${formatNumber(
+          modifier.value,
+        )}x${statusStr}`,
+      );
     }
   }
   console.log('');

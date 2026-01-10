@@ -9,5 +9,5 @@ export type Cost = {
 export const CostComponent = createComponent<Cost>('Cost');
 
 export function getUpgradeCost(cost: Cost, level: number) {
-  return Math.floor(cost.base * Math.pow(cost.growth, level - 1));
+  return Math.floor(cost.base * Math.pow(cost.growth, level));
 }

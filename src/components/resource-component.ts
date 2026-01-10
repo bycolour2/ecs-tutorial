@@ -2,8 +2,10 @@ import { createComponent } from '../lib/component-utils';
 
 export const RESOURCES_PRECISION = 1000;
 
+export type ResourceType = 'ore' | 'energy' | 'food' | 'money' | 'crystal' | 'artifact';
+
 export type Resource = {
-  type: string;
+  type: ResourceType;
   amount: number;
   cap?: number;
 };
