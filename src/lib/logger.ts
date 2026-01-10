@@ -58,106 +58,106 @@ export function logWorldState(world: World): void {
     console.log('  (none)');
   } else {
     for (const [entity, resource] of ResourceComponent.store) {
-      const amount = resource.amount / RESOURCES_PRECISION;
-      const capStr = resource.cap !== undefined ? ` / ${resource.cap / RESOURCES_PRECISION}` : '';
+      const amount = resource.amount;
+      const capStr = resource.cap !== undefined ? ` / ${resource.cap}` : '';
       console.log(`  [${entity}] ${resource.type.toUpperCase()}: ${formatNumber(amount)}${capStr}`);
     }
   }
   console.log('');
 
-  // ---------- Generators ----------
-  console.log('Generators:');
-  if (ResourceGeneratorComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, generator] of ResourceGeneratorComponent.store) {
-      const owner = OwnedByComponent.store.get(entity);
-      if (owner) {
-        const multiplier = getProductionMultiplier(world, owner.user, generator.resource);
-        const effectiveRate = generator.ratePerSecond * multiplier;
-        const multiplierStr = multiplier !== 1 ? ` (x${formatNumber(multiplier)})` : '';
-        console.log(
-          `  [${entity}] -> ${generator.resource} @ ${formatNumber(
-            generator.ratePerSecond,
-          )}/sec${multiplierStr} = ${formatNumber(effectiveRate)}/sec`,
-        );
-      } else {
-        console.log(
-          `  [${entity}] -> ${generator.resource} @ ${formatNumber(
-            generator.ratePerSecond,
-          )}/sec (no owner)`,
-        );
-      }
-    }
-  }
-  console.log('');
+  // // ---------- Generators ----------
+  // console.log('Generators:');
+  // if (ResourceGeneratorComponent.store.size === 0) {
+  //   console.log('  (none)');
+  // } else {
+  //   for (const [entity, generator] of ResourceGeneratorComponent.store) {
+  //     const owner = OwnedByComponent.store.get(entity);
+  //     if (owner) {
+  //       const multiplier = getProductionMultiplier(world, owner.owner, generator.resource);
+  //       const effectiveRate = generator.ratePerSecond * multiplier;
+  //       const multiplierStr = multiplier !== 1 ? ` (x${formatNumber(multiplier)})` : '';
+  //       console.log(
+  //         `  [${entity}] -> ${generator.resource} @ ${formatNumber(
+  //           generator.ratePerSecond,
+  //         )}/sec${multiplierStr} = ${formatNumber(effectiveRate)}/sec`,
+  //       );
+  //     } else {
+  //       console.log(
+  //         `  [${entity}] -> ${generator.resource} @ ${formatNumber(
+  //           generator.ratePerSecond,
+  //         )}/sec (no owner)`,
+  //       );
+  //     }
+  //   }
+  // }
+  // console.log('');
 
-  // ---------- Ownership ----------
-  console.log('Ownership:');
-  if (OwnedByComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, ownedBy] of OwnedByComponent.store) {
-      console.log(`  [${entity}] owned by user entity [${ownedBy.user}]`);
-    }
-  }
-  console.log('');
+  // // ---------- Ownership ----------
+  // console.log('Ownership:');
+  // if (OwnedByComponent.store.size === 0) {
+  //   console.log('  (none)');
+  // } else {
+  //   for (const [entity, ownedBy] of OwnedByComponent.store) {
+  //     console.log(`  [${entity}] owned by user entity [${ownedBy.owner}]`);
+  //   }
+  // }
+  // console.log('');
 
-  // ---------- Cost ----------
-  console.log('Cost:');
-  if (CostComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, cost] of CostComponent.store) {
-      const base = cost.base / RESOURCES_PRECISION;
-      console.log(
-        `  [${entity}] ${cost.resource}: base=${formatNumber(base)}, growth=${formatNumber(
-          cost.growth,
-        )}`,
-      );
-    }
-  }
-  console.log('');
+  // // ---------- Cost ----------
+  // console.log('Cost:');
+  // if (CostComponent.store.size === 0) {
+  //   console.log('  (none)');
+  // } else {
+  //   for (const [entity, cost] of CostComponent.store) {
+  //     const base = cost.base / RESOURCES_PRECISION;
+  //     console.log(
+  //       `  [${entity}] ${cost.resource}: base=${formatNumber(base)}, growth=${formatNumber(
+  //         cost.growth,
+  //       )}`,
+  //     );
+  //   }
+  // }
+  // console.log('');
 
-  // ---------- Limit ----------
-  console.log('Limit:');
-  if (LimitComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, limit] of LimitComponent.store) {
-      console.log(`  [${entity}] max: ${limit.max}`);
-    }
-  }
-  console.log('');
+  // // ---------- Limit ----------
+  // console.log('Limit:');
+  // if (LimitComponent.store.size === 0) {
+  //   console.log('  (none)');
+  // } else {
+  //   for (const [entity, limit] of LimitComponent.store) {
+  //     console.log(`  [${entity}] max: ${limit.max}`);
+  //   }
+  // }
+  // console.log('');
 
-  // ---------- Upgrade ----------
-  console.log('Upgrade:');
-  if (UpgradeComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, upgrade] of UpgradeComponent.store) {
-      console.log(`  [${entity}] id: ${upgrade.id}`);
-    }
-  }
-  console.log('');
+  // // ---------- Upgrade ----------
+  // console.log('Upgrade:');
+  // if (UpgradeComponent.store.size === 0) {
+  //   console.log('  (none)');
+  // } else {
+  //   for (const [entity, upgrade] of UpgradeComponent.store) {
+  //     console.log(`  [${entity}] id: ${upgrade.id}`);
+  //   }
+  // }
+  // console.log('');
 
-  // ---------- Modifier ----------
-  console.log('Modifier:');
-  if (ModifierComponent.store.size === 0) {
-    console.log('  (none)');
-  } else {
-    for (const [entity, modifier] of ModifierComponent.store) {
-      const owner = OwnedByComponent.store.get(entity);
-      const resourceStr = modifier.resource ? ` (${modifier.resource})` : ' (all)';
-      const statusStr = owner ? ` [ACTIVE - user: ${owner.user}]` : ' [blueprint]';
-      console.log(
-        `  [${entity}] ${modifier.stat}${resourceStr}: ${formatNumber(
-          modifier.value,
-        )}x${statusStr}`,
-      );
-    }
-  }
-  console.log('');
+  // // ---------- Modifier ----------
+  // console.log('Modifier:');
+  // if (ModifierComponent.store.size === 0) {
+  //   console.log('  (none)');
+  // } else {
+  //   for (const [entity, modifier] of ModifierComponent.store) {
+  //     const owner = OwnedByComponent.store.get(entity);
+  //     const resourceStr = modifier.resource ? ` (${modifier.resource})` : ' (all)';
+  //     const statusStr = owner ? ` [ACTIVE - user: ${owner.owner}]` : ' [blueprint]';
+  //     console.log(
+  //       `  [${entity}] ${modifier.stat}${resourceStr}: ${formatNumber(
+  //         modifier.value,
+  //       )}x${statusStr}`,
+  //     );
+  //   }
+  // }
+  // console.log('');
 
   // ---------- All Entities ----------
   const allEntities = new Set<number>();

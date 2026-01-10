@@ -1,10 +1,10 @@
+import { query } from '~/lib/query';
 import {
   OwnedByComponent,
   RESOURCES_PRECISION,
   ResourceComponent,
   ResourceGeneratorComponent,
 } from '../components';
-import { query } from '~/lib/component-utils';
 import { getProductionMultiplier } from '../lib/selectors';
 import { World } from '~/types';
 
@@ -13,11 +13,11 @@ export function productionSystem(world: World, deltaMs: number) {
   const resources = query(world, ResourceComponent, OwnedByComponent);
 
   for (const [, gen, genOwner] of generators) {
-    const multiplier = getProductionMultiplier(world, genOwner.user, gen.resource);
+    const multiplier = getProductionMultiplier(world, genOwner.owner, gen.resource);
 
     for (const [, res, resOwner] of resources) {
       // разные пользователи — пропускаем
-      if (genOwner.user !== resOwner.user) continue;
+      if (genOwner.owner !== resOwner.owner) continue;
 
       // другой тип ресурса — пропускаем
       if (res.type !== gen.resource) continue;

@@ -1,54 +1,37 @@
 import {
-  CostComponent,
-  LimitComponent,
-  ModifierComponent,
-  OwnedByComponent,
-  RESOURCES_PRECISION,
-  ResourceComponent,
-  ResourceGeneratorComponent,
-  UpgradeComponent,
-  UserComponent,
-} from '~/components';
+  createUser,
+  createUserResources,
+  registerComponents,
+  registerSingletons,
+} from '~/bootstrap';
+import { ResourceComponent } from '~/components';
 import { simulate } from '~/game-loop';
-import { addComponent, registerComponent } from '~/lib/component-utils';
+import { getComponent } from '~/lib/component-utils';
 import { logWorldState } from '~/lib/logger';
-import { registerSingleton } from '~/lib/singleton-utils';
-import { TimeSingleton } from '~/singletons';
+import { createWorld } from '~/lib/world-utils';
 import { purchaseUpgrade } from '~/systems';
 import { Component, Entity, World } from '~/types';
 
-let nextEntityId = 1;
-
-export function createEntity(): Entity {
-  return nextEntityId++;
-}
-
-export function createWorld(components?: Component<any>[]): World {
-  if (!components) {
-    return {
-      components: new Map(),
-      singletons: new Map(),
-    };
-  }
-
-  return {
-    components: new Map(components.map((component) => [component.name, component])),
-    singletons: new Map(),
-  };
-}
-
 const world = createWorld();
 
-registerComponent(world, ResourceComponent);
-registerComponent(world, UserComponent);
-registerComponent(world, OwnedByComponent);
-registerComponent(world, ResourceGeneratorComponent);
-registerComponent(world, ModifierComponent);
-registerComponent(world, CostComponent);
-registerComponent(world, LimitComponent);
-registerComponent(world, UpgradeComponent);
+registerComponents(world);
+registerSingletons(world);
 
-registerSingleton(world, TimeSingleton);
+const user = createUser(world);
+createUserResources(world, user);
+
+logWorldState(world);
+
+// временно мутируем ресурсы вручную
+for (const [, res] of getComponent(world, ResourceComponent) ?? []) {
+  if (res.type === 'ore') res.amount += 150;
+}
+
+// ---- Game simulation
+
+// simulate(world, 20000);
+
+logWorldState(world);
 
 // const userEntity = createEntity();
 // addComponent(world, userEntity, UserComponent, { id: 'player-1' });
@@ -102,15 +85,15 @@ registerSingleton(world, TimeSingleton);
 // });
 
 // ---- Game simulation
-logWorldState(world);
+// logWorldState(world);
 
-simulate(world, 20000);
+// simulate(world, 20000);
 
-logWorldState(world);
+// logWorldState(world);
 
 // purchaseUpgrade(world, userEntity, goldUpgradeEntity);
-simulate(world, 2000);
+// simulate(world, 2000);
 
-logWorldState(world);
+// logWorldState(world);
 
 // simulate(world, 30000);

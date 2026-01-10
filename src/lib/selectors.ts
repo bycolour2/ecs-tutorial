@@ -8,14 +8,14 @@ import {
   UpgradeComponent,
   getUpgradeCost,
 } from '~/components';
+import { query } from '~/lib/query';
 import { Entity, World } from '~/types';
-import { query } from './component-utils';
 
 export function selectUserResources(world: World, user: Entity) {
   const resources = query(world, ResourceComponent, OwnedByComponent);
 
   return resources
-    .filter(([, , owner]) => owner.user === user)
+    .filter(([, , owner]) => owner.owner === user)
     .map(([, res]) => ({
       type: res.type,
       value: res.amount / RESOURCES_PRECISION,
@@ -26,7 +26,7 @@ export function selectUserGenerators(world: World, user: Entity) {
   const gens = query(world, ResourceGeneratorComponent, OwnedByComponent);
 
   return gens
-    .filter(([, , owner]) => owner.user === user)
+    .filter(([, , owner]) => owner.owner === user)
     .map(([, gen]) => ({
       resource: gen.resource,
       ratePerSecond: gen.ratePerSecond,
@@ -39,7 +39,7 @@ export function getProductionMultiplier(world: World, user: Entity, resource: st
   let bonus = 0;
 
   for (const [, mod, owner] of modifiers) {
-    if (owner.user !== user) continue;
+    if (owner.owner !== user) continue;
     if (mod.stat !== 'production') continue;
     if (mod.resource && mod.resource !== resource) continue;
 
@@ -53,7 +53,7 @@ export function selectUserUpgrades(world: World, user: Entity) {
   const mods = query(world, ModifierComponent, OwnedByComponent);
 
   return mods
-    .filter(([, , owner]) => owner.user === user)
+    .filter(([, , owner]) => owner.owner === user)
     .map(([, mod]) => ({
       stat: mod.stat,
       resource: mod.resource ?? 'all',
@@ -82,6 +82,6 @@ export function selectAvailableUpgrades(world: World, user: Entity) {
 export function countAppliedUpgrades(world: World, user: Entity, upgradeId: string) {
   const applied = query(world, ModifierComponent, OwnedByComponent, UpgradeComponent);
 
-  return applied.filter(([, , owner, upgrade]) => owner.user === user && upgrade.id === upgradeId)
+  return applied.filter(([, , owner, upgrade]) => owner.owner === user && upgrade.id === upgradeId)
     .length;
 }

@@ -1,4 +1,3 @@
-import { createEntity } from '..';
 import {
   CostComponent,
   LimitComponent,
@@ -8,9 +7,10 @@ import {
   UpgradeComponent,
   getUpgradeCost,
 } from '../components';
-import { addComponent, query } from '~/lib/component-utils';
 import { countAppliedUpgrades } from '../lib/selectors';
 import { Entity, World } from '~/types';
+import { addComponent, createEntity } from '~/lib/world-utils';
+import { query } from '~/lib/query';
 
 export function purchaseUpgrade(world: World, user: Entity, blueprint: Entity): boolean {
   const upgrade = UpgradeComponent.store.get(blueprint)!;
@@ -30,7 +30,7 @@ export function purchaseUpgrade(world: World, user: Entity, blueprint: Entity): 
   const resources = query(world, ResourceComponent, OwnedByComponent);
 
   const resourceEntry = resources.find(
-    ([, res, owner]) => owner.user === user && res.type === cost.resource,
+    ([, res, owner]) => owner.owner === user && res.type === cost.resource,
   );
 
   if (!resourceEntry) return false;
@@ -51,7 +51,7 @@ export function purchaseUpgrade(world: World, user: Entity, blueprint: Entity): 
   const appliedEntity = createEntity();
 
   addComponent(world, appliedEntity, ModifierComponent, modifier);
-  addComponent(world, appliedEntity, OwnedByComponent, { user });
+  addComponent(world, appliedEntity, OwnedByComponent, { owner: user });
   addComponent(world, appliedEntity, UpgradeComponent, { id: upgrade.id });
 
   return true;
