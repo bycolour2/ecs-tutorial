@@ -15,6 +15,15 @@ export function getComponent<T>(world: World, component: Component<T>): Map<Enti
   return world.components.get(component.name)!.store;
 }
 
+export function getComponentValue<T>(
+  world: World,
+  component: Component<T>,
+  entity: Entity,
+): T | undefined {
+  const store = getComponent(world, component);
+  return store.get(entity);
+}
+
 export function removeAllComponents(world: World, entity: Entity) {
   for (const [, component] of world.components) {
     component.store.delete(entity);
