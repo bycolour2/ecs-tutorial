@@ -4,12 +4,16 @@ import {
   registerComponents,
   registerSingletons,
 } from '~/bootstrap';
+import { createExtractionStations } from '~/bootstrap/create-stations';
 import { ResourceComponent } from '~/components';
 import { simulate } from '~/game-loop';
 import { getComponent } from '~/lib/component-utils';
 import { logWorldState } from '~/lib/logger';
 import { createWorld } from '~/lib/world-utils';
-import { purchaseUpgrade } from '~/systems';
+import { getPlayerResources } from '~/snapshots';
+import { productionSystem, purchaseUpgrade } from '~/systems';
+import { buildStationSystem } from '~/systems/build-station-system';
+import { resourceClampSystem } from '~/systems/resource-clamp-system';
 import { Component, Entity, World } from '~/types';
 
 const world = createWorld();
@@ -19,19 +23,25 @@ registerSingletons(world);
 
 const user = createUser(world);
 createUserResources(world, user);
+createExtractionStations(world, user);
 
 logWorldState(world);
 
 // временно мутируем ресурсы вручную
 for (const [, res] of getComponent(world, ResourceComponent) ?? []) {
-  if (res.type === 'ore') res.amount += 150;
+  if (res.type === 'ore') res.amount = 50;
 }
 
-// ---- Game simulation
+logWorldState(world);
 
-// simulate(world, 20000);
+buildStationSystem(world, 'ore');
 
 logWorldState(world);
+
+productionSystem(world, 10);
+resourceClampSystem(world);
+
+console.log(getPlayerResources(world, user));
 
 // const userEntity = createEntity();
 // addComponent(world, userEntity, UserComponent, { id: 'player-1' });
