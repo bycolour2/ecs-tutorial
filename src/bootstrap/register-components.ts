@@ -2,10 +2,13 @@ import {
   CostComponent,
   ExtractionStationComponent,
   LimitComponent,
+  MerchantComponent,
   ModifierComponent,
   OwnedByComponent,
   ResourceComponent,
   ResourceGeneratorComponent,
+  SellPriceComponent,
+  ShopItemComponent,
   UpgradeComponent,
   UserComponent,
 } from '~/components';
@@ -22,4 +25,7 @@ export function registerComponents(world: World) {
   registerComponent(world, ModifierComponent);
   registerComponent(world, CostComponent);
   registerComponent(world, LimitComponent);
+  registerComponent(world, MerchantComponent);
+  registerComponent(world, SellPriceComponent);
+  registerComponent(world, ShopItemComponent);
 }

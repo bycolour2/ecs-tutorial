@@ -7,3 +7,6 @@ export * from './upgrade-component';
 export * from './modifier-component';
 export * from './cost-component';
 export * from './limit-component';
+export * from './merchant-component';
+export * from './sell-price-component';
+export * from './shop-item-component';
