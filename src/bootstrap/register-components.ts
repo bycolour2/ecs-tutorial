@@ -5,6 +5,7 @@ import {
   MerchantComponent,
   ModifierComponent,
   OwnedByComponent,
+  ProvidedByMerchantComponent,
   ResourceComponent,
   ResourceGeneratorComponent,
   SellPriceComponent,
@@ -26,6 +27,7 @@ export function registerComponents(world: World) {
   registerComponent(world, CostComponent);
   registerComponent(world, LimitComponent);
   registerComponent(world, MerchantComponent);
+  registerComponent(world, ProvidedByMerchantComponent);
   registerComponent(world, SellPriceComponent);
   registerComponent(world, ShopItemComponent);
 }

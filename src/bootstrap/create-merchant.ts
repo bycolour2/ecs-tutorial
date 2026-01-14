@@ -1,6 +1,17 @@
-import { MerchantComponent, SellPriceComponent } from '~/components';
+import {
+  MerchantComponent,
+  ProvidedByMerchantComponent,
+  SellPriceComponent,
+  ResourceType,
+} from '~/components';
 import { addComponent, createEntity } from '~/lib/world-utils';
 import { World } from '~/types';
+
+const SELL_PRICES: Array<{ resource: ResourceType; pricePerUnit: number }> = [
+  { resource: 'ore', pricePerUnit: 1 },
+  { resource: 'energy', pricePerUnit: 2 },
+  { resource: 'food', pricePerUnit: 2 },
+];
 
 export function createMerchant(world: World) {
   const merchantEntity = createEntity();
@@ -9,20 +20,18 @@ export function createMerchant(world: World) {
     id: 'default',
   });
 
-  addComponent(world, merchantEntity, SellPriceComponent, {
-    resource: 'ore',
-    pricePerUnit: 1,
-  });
+  for (const price of SELL_PRICES) {
+    const sellPriceEntity = createEntity();
 
-  addComponent(world, merchantEntity, SellPriceComponent, {
-    resource: 'energy',
-    pricePerUnit: 2,
-  });
+    addComponent(world, sellPriceEntity, SellPriceComponent, {
+      resource: price.resource,
+      pricePerUnit: price.pricePerUnit,
+    });
 
-  addComponent(world, merchantEntity, SellPriceComponent, {
-    resource: 'food',
-    pricePerUnit: 2,
-  });
+    addComponent(world, sellPriceEntity, ProvidedByMerchantComponent, {
+      merchant: merchantEntity,
+    });
+  }
 
   return merchantEntity;
 }
