@@ -1,5 +1,6 @@
 import {
   createExtractionStations,
+  createMerchant,
   createUser,
   createUserResources,
   registerComponents,
@@ -14,6 +15,7 @@ import {
   buildStationSystem,
   productionSystem,
   resourceClampSystem,
+  sellResourceSystem,
 } from '~/systems';
 
 const world = createWorld();
@@ -24,6 +26,7 @@ registerSingletons(world);
 const user = createUser(world);
 createUserResources(world, user);
 createExtractionStations(world, user);
+createMerchant(world);
 
 logWorldState(world);
 
@@ -39,6 +42,13 @@ buildStationSystem(world, 'ore');
 logWorldState(world);
 
 productionSystem(world, 10);
+
+logWorldState(world);
+
+sellResourceSystem(world, user, 'ore', 20);
+
+logWorldState(world);
+
 resourceClampSystem(world);
 
 console.log(getPlayerResources(world, user));

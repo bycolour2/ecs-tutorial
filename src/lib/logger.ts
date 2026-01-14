@@ -2,10 +2,14 @@ import {
   CostComponent,
   ExtractionStationComponent,
   LimitComponent,
+  MerchantComponent,
   ModifierComponent,
   OwnedByComponent,
+  ProvidedByMerchantComponent,
   ResourceComponent,
   ResourceGeneratorComponent,
+  SellPriceComponent,
+  ShopItemComponent,
   UpgradeComponent,
   UserComponent,
   RESOURCES_PRECISION,
@@ -183,6 +187,54 @@ export function logWorldState(world: World): void {
         `  [${entity}] ${modifier.stat}${resourceStr}: ${formatNumber(
           modifier.value,
         )}x${statusStr}`,
+      );
+    }
+  }
+  console.log('');
+
+  // ---------- Merchant ----------
+  console.log('Merchant:');
+  const merchants = getComponent(world, MerchantComponent);
+  if (merchants.size === 0) {
+    console.log('  (none)');
+  } else {
+    for (const [entity, merchant] of merchants) {
+      console.log(`  [${entity}] id: ${merchant.id}`);
+    }
+  }
+  console.log('');
+
+  // ---------- Shop Item ----------
+  console.log('Shop Item:');
+  const shopItems = getComponent(world, ShopItemComponent);
+  if (shopItems.size === 0) {
+    console.log('  (none)');
+  } else {
+    for (const [entity, shopItem] of shopItems) {
+      const providedBy = getComponentValue(world, ProvidedByMerchantComponent, entity);
+      const merchantStr = providedBy ? `, merchant: [${providedBy.merchant}]` : ' (no merchant)';
+      console.log(
+        `  [${entity}] itemId: ${shopItem.itemId}, costMoney: ${formatNumber(
+          shopItem.costMoney,
+        )}${merchantStr}`,
+      );
+    }
+  }
+  console.log('');
+
+  // ---------- Sell Price ----------
+  console.log('Sell Price:');
+  const sellPrices = getComponent(world, SellPriceComponent);
+  if (sellPrices.size === 0) {
+    console.log('  (none)');
+  } else {
+    for (const [entity, sellPrice] of sellPrices) {
+      const providedBy = getComponentValue(world, ProvidedByMerchantComponent, entity);
+      const merchantStr = providedBy ? `, merchant: [${providedBy.merchant}]` : ' (no merchant)';
+      console.log(
+        `  [${entity}] ${sellPrice.resource.toUpperCase()}: ${formatNumber(
+          sellPrice.pricePerUnit,
+        )} per unit${merchantStr}`,
       );
     }
   }
