@@ -13,7 +13,7 @@ const STATIONS: Array<{ resource: ResourceType; rate: number }> = [
   { resource: 'food', rate: 0.5 },
 ];
 
-export function createExtractionStations(world: any, player: Entity) {
+export function createExtractionStations(world: any, user: Entity) {
   for (const station of STATIONS) {
     const extractionStationEntity = createEntity();
 
@@ -29,7 +29,7 @@ export function createExtractionStations(world: any, player: Entity) {
     });
 
     addComponent(world, extractionStationEntity, OwnedByComponent, {
-      owner: player,
+      owner: user,
     });
   }
 }

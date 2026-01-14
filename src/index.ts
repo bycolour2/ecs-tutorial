@@ -1,20 +1,20 @@
 import {
+  createExtractionStations,
   createUser,
   createUserResources,
   registerComponents,
   registerSingletons,
 } from '~/bootstrap';
-import { createExtractionStations } from '~/bootstrap/create-stations';
 import { ResourceComponent } from '~/components';
-import { simulate } from '~/game-loop';
 import { getComponent } from '~/lib/component-utils';
 import { logWorldState } from '~/lib/logger';
 import { createWorld } from '~/lib/world-utils';
 import { getPlayerResources } from '~/snapshots';
-import { productionSystem, purchaseUpgrade } from '~/systems';
-import { buildStationSystem } from '~/systems/build-station-system';
-import { resourceClampSystem } from '~/systems/resource-clamp-system';
-import { Component, Entity, World } from '~/types';
+import {
+  buildStationSystem,
+  productionSystem,
+  resourceClampSystem,
+} from '~/systems';
 
 const world = createWorld();
 
