@@ -1,4 +1,9 @@
-import { UpgradeDefinitionComponent, UpgradeStateComponent } from '~/components';
+import {
+  ModifierComponent,
+  ProvidedByUpgradeComponent,
+  UpgradeDefinitionComponent,
+  UpgradeStateComponent,
+} from '~/components';
 import { addComponent, createEntity } from '~/lib/world-utils';
 import { World } from '~/types';
 
@@ -16,5 +21,17 @@ export function createUpgrades(world: World) {
 
   addComponent(world, upgradeEntity, UpgradeStateComponent, {
     state: 'available',
+  });
+
+  const modifierEntity = createEntity();
+
+  addComponent(world, modifierEntity, ModifierComponent, {
+    target: 'generator_rate',
+    resource: 'ore',
+    value: 1,
+  });
+
+  addComponent(world, modifierEntity, ProvidedByUpgradeComponent, {
+    source: upgradeEntity,
   });
 }

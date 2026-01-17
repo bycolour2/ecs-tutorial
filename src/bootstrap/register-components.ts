@@ -6,6 +6,7 @@ import {
   ModifierComponent,
   OwnedByComponent,
   ProvidedByMerchantComponent,
+  ProvidedByUpgradeComponent,
   ResourceComponent,
   ResourceGeneratorComponent,
   SellPriceComponent,
@@ -24,7 +25,6 @@ export function registerComponents(world: World) {
   registerComponent(world, ResourceComponent);
   registerComponent(world, ExtractionStationComponent);
   registerComponent(world, ResourceGeneratorComponent);
-  registerComponent(world, ModifierComponent);
   registerComponent(world, CostComponent);
   registerComponent(world, LimitComponent);
   registerComponent(world, MerchantComponent);
@@ -34,4 +34,6 @@ export function registerComponents(world: World) {
   registerComponent(world, UpgradeDefinitionComponent);
   registerComponent(world, UpgradeProgressComponent);
   registerComponent(world, UpgradeStateComponent);
+  registerComponent(world, ModifierComponent);
+  registerComponent(world, ProvidedByUpgradeComponent);
 }

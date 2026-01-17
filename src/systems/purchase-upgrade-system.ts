@@ -10,16 +10,16 @@ import { addComponent } from '~/lib/world-utils';
 import { query } from '~/lib/query';
 
 export function purchaseUpgradeSystem(world: World, user: Entity, upgradeId: string) {
-  for (const [entity, upgrade, state] of query(
+  for (const [entity, upgradeDefinition, state] of query(
     world,
     UpgradeDefinitionComponent,
     UpgradeStateComponent,
   )) {
-    if (upgrade.id !== upgradeId) continue;
+    if (upgradeDefinition.id !== upgradeId) continue;
     if (state.state !== 'available') continue;
 
     // проверяем, достаточно ли ресурсов
-    for (const [resourceType, cost] of Object.entries(upgrade.cost)) {
+    for (const [resourceType, cost] of Object.entries(upgradeDefinition.cost)) {
       let available = 0;
 
       for (const [, resource, ownedBy] of query(world, ResourceComponent, OwnedByComponent)) {
@@ -34,7 +34,7 @@ export function purchaseUpgradeSystem(world: World, user: Entity, upgradeId: str
     }
 
     // списываем ресурсы
-    for (const [type, cost] of Object.entries(upgrade.cost)) {
+    for (const [type, cost] of Object.entries(upgradeDefinition.cost)) {
       for (const [, resource, ownedBy] of query(world, ResourceComponent, OwnedByComponent)) {
         if (ownedBy.owner !== user) continue;
         if (resource.type === type) {

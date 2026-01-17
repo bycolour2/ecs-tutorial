@@ -184,7 +184,7 @@ export function logWorldState(world: World): void {
       const resourceStr = modifier.resource ? ` (${modifier.resource})` : ' (all)';
       const statusStr = owner ? ` [ACTIVE - user: ${owner.owner}]` : ' [blueprint]';
       console.log(
-        `  [${entity}] ${modifier.stat}${resourceStr}: ${formatNumber(
+        `  [${entity}] ${modifier.target}${resourceStr}: ${formatNumber(
           modifier.value,
         )}x${statusStr}`,
       );

@@ -6,7 +6,7 @@ import {
 import { query } from '~/lib/query';
 import { World } from '~/types';
 
-export function upgradeProgressSystem(world: World, deltaSeconds: number) {
+export function upgradeProgressSystem(world: World, deltaMs: number) {
   for (const [, progress, state, definition] of query(
     world,
     UpgradeProgressComponent,
@@ -15,9 +15,9 @@ export function upgradeProgressSystem(world: World, deltaSeconds: number) {
   )) {
     if (state.state !== 'inProgress') continue;
 
-    progress.progress += deltaSeconds;
+    progress.progress += deltaMs;
 
-    if (progress.progress >= definition.duration) {
+    if (progress.progress >= definition.duration * 1000) {
       state.state = 'completed';
     }
   }

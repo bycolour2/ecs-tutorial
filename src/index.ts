@@ -45,7 +45,7 @@ buildStationSystem(world, 'ore');
 
 logChanges(world);
 
-productionSystem(world, 10);
+productionSystem(world, 10000);
 
 logChanges(world);
 
@@ -59,14 +59,17 @@ purchaseUpgradeSystem(world, user, 'ore_station_level_2');
 
 logChanges(world);
 
-upgradeProgressSystem(world, 10);
+upgradeProgressSystem(world, 10000);
 
 logChanges(world);
 
-upgradeProgressSystem(world, 20);
+upgradeProgressSystem(world, 50000);
 
 logChanges(world);
 
+productionSystem(world, 10000);
+
+logChanges(world);
 console.log(getPlayerResources(world, user));
 
 // const userEntity = createEntity();
