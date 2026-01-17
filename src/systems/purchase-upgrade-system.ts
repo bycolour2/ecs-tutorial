@@ -1,67 +1,54 @@
 import {
-  CostComponent,
-  LimitComponent,
-  ModifierComponent,
   OwnedByComponent,
   ResourceComponent,
-  UpgradeComponent,
-  getUpgradeCost,
-} from '../components';
-import { getComponentValue } from '../lib/component-utils';
-import { countAppliedUpgrades } from '../lib/selectors';
+  UpgradeDefinitionComponent,
+  UpgradeProgressComponent,
+  UpgradeStateComponent,
+} from '~/components';
 import { Entity, World } from '~/types';
-import { addComponent, createEntity } from '~/lib/world-utils';
+import { addComponent } from '~/lib/world-utils';
 import { query } from '~/lib/query';
 
-export function purchaseUpgrade(world: World, user: Entity, blueprint: Entity): boolean {
-  const upgrade = getComponentValue(world, UpgradeComponent, blueprint);
-  const cost = getComponentValue(world, CostComponent, blueprint);
-  const limit = getComponentValue(world, LimitComponent, blueprint);
+export function purchaseUpgradeSystem(world: World, user: Entity, upgradeId: string) {
+  for (const [entity, upgrade, state] of query(
+    world,
+    UpgradeDefinitionComponent,
+    UpgradeStateComponent,
+  )) {
+    if (upgrade.id !== upgradeId) continue;
+    if (state.state !== 'available') continue;
 
-  if (!upgrade || !cost) {
-    return false;
+    // проверяем, достаточно ли ресурсов
+    for (const [resourceType, cost] of Object.entries(upgrade.cost)) {
+      let available = 0;
+
+      for (const [, resource, ownedBy] of query(world, ResourceComponent, OwnedByComponent)) {
+        if (ownedBy.owner !== user) continue;
+        if (resource.type === resourceType) {
+          available = resource.amount;
+          break;
+        }
+      }
+
+      if (available < cost) return;
+    }
+
+    // списываем ресурсы
+    for (const [type, cost] of Object.entries(upgrade.cost)) {
+      for (const [, resource, ownedBy] of query(world, ResourceComponent, OwnedByComponent)) {
+        if (ownedBy.owner !== user) continue;
+        if (resource.type === type) {
+          resource.amount -= cost;
+        }
+      }
+    }
+
+    state.state = 'inProgress';
+
+    addComponent(world, entity, UpgradeProgressComponent, {
+      progress: 0,
+    });
+
+    return;
   }
-
-  const level = countAppliedUpgrades(world, user, upgrade.id);
-
-  // лимит
-  if (limit && level >= limit.max) {
-    return false;
-  }
-
-  const price = getUpgradeCost(cost, level);
-
-  // ищем ресурс пользователя
-  const resources = query(world, ResourceComponent, OwnedByComponent);
-
-  const resourceEntry = resources.find(
-    ([, res, owner]) => owner.owner === user && res.type === cost.resource,
-  );
-
-  if (!resourceEntry) return false;
-
-  const [, resource] = resourceEntry;
-
-  // недостаточно ресурсов
-  if (resource.amount < price) {
-    return false;
-  }
-
-  // списываем
-  resource.amount -= price;
-
-  // применяем апгрейд → создаём сущность модификатора
-  const modifier = getComponentValue(world, ModifierComponent, blueprint);
-
-  if (!modifier) {
-    return false;
-  }
-
-  const appliedEntity = createEntity();
-
-  addComponent(world, appliedEntity, ModifierComponent, modifier);
-  addComponent(world, appliedEntity, OwnedByComponent, { owner: user });
-  addComponent(world, appliedEntity, UpgradeComponent, { id: upgrade.id });
-
-  return true;
 }

@@ -10,7 +10,9 @@ import {
   ResourceGeneratorComponent,
   SellPriceComponent,
   ShopItemComponent,
-  UpgradeComponent,
+  UpgradeDefinitionComponent,
+  UpgradeProgressComponent,
+  UpgradeStateComponent,
   UserComponent,
 } from '~/components';
 import { registerComponent } from '~/lib/component-utils';
@@ -22,7 +24,6 @@ export function registerComponents(world: World) {
   registerComponent(world, ResourceComponent);
   registerComponent(world, ExtractionStationComponent);
   registerComponent(world, ResourceGeneratorComponent);
-  registerComponent(world, UpgradeComponent);
   registerComponent(world, ModifierComponent);
   registerComponent(world, CostComponent);
   registerComponent(world, LimitComponent);
@@ -30,4 +31,7 @@ export function registerComponents(world: World) {
   registerComponent(world, ProvidedByMerchantComponent);
   registerComponent(world, SellPriceComponent);
   registerComponent(world, ShopItemComponent);
+  registerComponent(world, UpgradeDefinitionComponent);
+  registerComponent(world, UpgradeProgressComponent);
+  registerComponent(world, UpgradeStateComponent);
 }

@@ -1,6 +1,7 @@
 import {
   createExtractionStations,
   createMerchant,
+  createUpgrades,
   createUser,
   createUserResources,
   registerComponents,
@@ -8,14 +9,16 @@ import {
 } from '~/bootstrap';
 import { ResourceComponent } from '~/components';
 import { getComponent } from '~/lib/component-utils';
-import { logWorldState } from '~/lib/logger';
+import { createChangesLogger } from '~/lib/logger';
 import { createWorld } from '~/lib/world-utils';
 import { getPlayerResources } from '~/snapshots';
 import {
   buildStationSystem,
   productionSystem,
+  purchaseUpgradeSystem,
   resourceClampSystem,
   sellResourceSystem,
+  upgradeProgressSystem,
 } from '~/systems';
 
 const world = createWorld();
@@ -27,29 +30,42 @@ const user = createUser(world);
 createUserResources(world, user);
 createExtractionStations(world, user);
 createMerchant(world);
+createUpgrades(world);
 
-logWorldState(world);
+const logChanges = createChangesLogger(world);
 
 // временно мутируем ресурсы вручную
 for (const [, res] of getComponent(world, ResourceComponent) ?? []) {
-  if (res.type === 'ore') res.amount = 50;
+  if (res.type === 'ore') res.amount = 100;
 }
 
-logWorldState(world);
+logChanges(world);
 
 buildStationSystem(world, 'ore');
 
-logWorldState(world);
+logChanges(world);
 
 productionSystem(world, 10);
 
-logWorldState(world);
+logChanges(world);
 
 sellResourceSystem(world, user, 'ore', 20);
 
-logWorldState(world);
+logChanges(world);
 
 resourceClampSystem(world);
+
+purchaseUpgradeSystem(world, user, 'ore_station_level_2');
+
+logChanges(world);
+
+upgradeProgressSystem(world, 10);
+
+logChanges(world);
+
+upgradeProgressSystem(world, 20);
+
+logChanges(world);
 
 console.log(getPlayerResources(world, user));
 
