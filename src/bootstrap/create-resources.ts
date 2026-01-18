@@ -7,6 +7,8 @@ const BASE_RESOURCES: Array<{ type: ResourceType; amount: number; cap?: number }
   { type: 'energy', amount: 0, cap: 50 },
   { type: 'food', amount: 0, cap: 50 },
   { type: 'money', amount: 0 },
+  { type: 'crystal', amount: 0, cap: 10 },
+  { type: 'artifact', amount: 0, cap: 10 },
 ];
 
 export function createUserResources(world: World, user: Entity) {

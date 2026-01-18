@@ -14,3 +14,7 @@ export * from './upgrade-progress-component';
 export * from './upgrade-state-component';
 export * from './modifier-component';
 export * from './provided-by-upgrade-component';
+export * from './expedition-component';
+export * from './expedition-progress-component';
+export * from './expedition-reward-component';
+export * from './expedition-start-event-component';

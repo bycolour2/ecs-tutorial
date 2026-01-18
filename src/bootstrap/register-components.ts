@@ -1,5 +1,8 @@
 import {
   CostComponent,
+  ExpeditionComponent,
+  ExpeditionProgressComponent,
+  ExpeditionRewardComponent,
   ExtractionStationComponent,
   LimitComponent,
   MerchantComponent,
@@ -11,6 +14,7 @@ import {
   ResourceGeneratorComponent,
   SellPriceComponent,
   ShopItemComponent,
+  ExpeditionStartEventComponent,
   UpgradeDefinitionComponent,
   UpgradeProgressComponent,
   UpgradeStateComponent,
@@ -36,4 +40,8 @@ export function registerComponents(world: World) {
   registerComponent(world, UpgradeStateComponent);
   registerComponent(world, ModifierComponent);
   registerComponent(world, ProvidedByUpgradeComponent);
+  registerComponent(world, ExpeditionComponent);
+  registerComponent(world, ExpeditionProgressComponent);
+  registerComponent(world, ExpeditionRewardComponent);
+  registerComponent(world, ExpeditionStartEventComponent);
 }
