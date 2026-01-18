@@ -45,7 +45,7 @@ export function purchaseUpgradeSystem(world: World, user: Entity, upgradeId: str
 
     state.state = 'inProgress';
 
-    addComponent(world, entity, UpgradeProgressComponent, {
+    addComponent(world, UpgradeProgressComponent, entity, {
       progress: 0,
     });
 

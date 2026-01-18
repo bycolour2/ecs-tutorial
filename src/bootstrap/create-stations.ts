@@ -17,18 +17,18 @@ export function createExtractionStations(world: any, user: Entity) {
   for (const station of STATIONS) {
     const extractionStationEntity = createEntity();
 
-    addComponent(world, extractionStationEntity, ExtractionStationComponent, {
+    addComponent(world, ExtractionStationComponent, extractionStationEntity, {
       resource: station.resource,
       level: 1,
       built: false,
     });
 
-    addComponent(world, extractionStationEntity, ResourceGeneratorComponent, {
+    addComponent(world, ResourceGeneratorComponent, extractionStationEntity, {
       resource: station.resource,
       baseRate: station.rate,
     });
 
-    addComponent(world, extractionStationEntity, OwnedByComponent, {
+    addComponent(world, OwnedByComponent, extractionStationEntity, {
       owner: user,
     });
   }

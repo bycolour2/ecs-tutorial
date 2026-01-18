@@ -15,21 +15,21 @@ export function startExpeditionSystem(world: World) {
 
     const duration = event.target === 'crystal' ? 60_000 : 120_000;
 
-    addComponent(world, expedition, ExpeditionComponent, {
+    addComponent(world, ExpeditionComponent, expedition, {
       target: event.target,
       duration,
     });
 
-    addComponent(world, expedition, ExpeditionProgressComponent, {
+    addComponent(world, ExpeditionProgressComponent, expedition, {
       progress: 0,
     });
 
-    addComponent(world, expedition, ExpeditionRewardComponent, {
+    addComponent(world, ExpeditionRewardComponent, expedition, {
       resource: event.target,
       amount: 1,
     });
 
-    addComponent(world, expedition, OwnedByComponent, {
+    addComponent(world, OwnedByComponent, expedition, {
       owner: event.user,
     });
 

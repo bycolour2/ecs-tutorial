@@ -15,12 +15,12 @@ export function createUserResources(world: World, user: Entity) {
   for (const res of BASE_RESOURCES) {
     const resourceEntity = createEntity();
 
-    addComponent(world, resourceEntity, ResourceComponent, {
+    addComponent(world, ResourceComponent, resourceEntity, {
       type: res.type,
       amount: res.amount,
       cap: res.cap,
     });
 
-    addComponent(world, resourceEntity, OwnedByComponent, { owner: user });
+    addComponent(world, OwnedByComponent, resourceEntity, { owner: user });
   }
 }

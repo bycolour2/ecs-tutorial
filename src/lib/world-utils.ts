@@ -20,11 +20,11 @@ export function createWorld(components?: Component<any>[]): World {
   };
 }
 
-export function addComponent<T>(world: World, entity: Entity, component: Component<T>, value: T) {
+export function addComponent<T>(world: World, component: Component<T>, entity: Entity, value: T) {
   component.store.set(entity, value);
 }
 
-export function removeComponent<T>(world: World, entity: Entity, component: Component<T>) {
+export function removeComponent<T>(world: World, component: Component<T>, entity: Entity) {
   component.store.delete(entity);
 }
 

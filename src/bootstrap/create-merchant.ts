@@ -16,19 +16,19 @@ const SELL_PRICES: Array<{ resource: ResourceType; pricePerUnit: number }> = [
 export function createMerchant(world: World) {
   const merchantEntity = createEntity();
 
-  addComponent(world, merchantEntity, MerchantComponent, {
+  addComponent(world, MerchantComponent, merchantEntity, {
     id: 'default',
   });
 
   for (const price of SELL_PRICES) {
     const sellPriceEntity = createEntity();
 
-    addComponent(world, sellPriceEntity, SellPriceComponent, {
+    addComponent(world, SellPriceComponent, sellPriceEntity, {
       resource: price.resource,
       pricePerUnit: price.pricePerUnit,
     });
 
-    addComponent(world, sellPriceEntity, ProvidedByMerchantComponent, {
+    addComponent(world, ProvidedByMerchantComponent, sellPriceEntity, {
       merchant: merchantEntity,
     });
   }

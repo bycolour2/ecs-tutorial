@@ -5,7 +5,7 @@ import { World } from '~/types';
 export function createUser(world: World) {
   const userEntity = createEntity();
 
-  addComponent(world, userEntity, UserComponent, {
+  addComponent(world, UserComponent, userEntity, {
     id: `User-${crypto.randomUUID()}`,
     name: 'User',
   });

@@ -14,14 +14,7 @@ import { getComponent } from '~/lib/component-utils';
 import { createChangesLogger } from '~/lib/logger';
 import { createWorld } from '~/lib/world-utils';
 import { getPlayerResources } from '~/snapshots';
-import {
-  buildStationSystem,
-  productionSystem,
-  purchaseUpgradeSystem,
-  resourceClampSystem,
-  sellResourceSystem,
-  upgradeProgressSystem,
-} from '~/systems';
+import { buildStationSystem, purchaseUpgradeSystem, sellResourceSystem } from '~/systems';
 
 const world = createWorld();
 
@@ -86,53 +79,53 @@ logChanges(world);
 console.log(getPlayerResources(world, user));
 
 // const userEntity = createEntity();
-// addComponent(world, userEntity, UserComponent, { id: 'player-1' });
+// addComponent(world, UserComponent, userEntity, { id: 'player-1' });
 
 // const goldEntity = createEntity();
-// addComponent(world, goldEntity, ResourceComponent, {
+// addComponent(world, ResourceComponent, goldEntity, {
 //   type: 'food',
 //   amount: 0,
 //   cap: 5000,
 // });
-// addComponent(world, goldEntity, OwnedByComponent, { user: userEntity });
+// addComponent(world, OwnedByComponent, goldEntity, { user: userEntity });
 
 // const minerEntity = createEntity();
-// addComponent(world, minerEntity, ResourceGeneratorComponent, {
+// addComponent(world, ResourceGeneratorComponent, minerEntity, {
 //   resource: 'gold',
 //   ratePerSecond: 5,
 // });
-// addComponent(world, minerEntity, OwnedByComponent, { user: userEntity });
+// addComponent(world, OwnedByComponent, minerEntity, { user: userEntity });
 
 // const woodEntity = createEntity();
-// addComponent(world, woodEntity, ResourceComponent, {
+// addComponent(world, ResourceComponent, woodEntity, {
 //   type: 'ore',
 //   amount: 0,
 //   cap: 2000,
 // });
-// addComponent(world, woodEntity, OwnedByComponent, { user: userEntity });
+// addComponent(world, OwnedByComponent, woodEntity, { user: userEntity });
 
 // const sawmillEntity = createEntity();
-// addComponent(world, sawmillEntity, ResourceGeneratorComponent, {
+// addComponent(world, ResourceGeneratorComponent, sawmillEntity, {
 //   resource: 'wood',
 //   ratePerSecond: 2,
 // });
-// addComponent(world, sawmillEntity, OwnedByComponent, { user: userEntity });
+// addComponent(world, OwnedByComponent, sawmillEntity, { user: userEntity });
 
 // const goldUpgradeEntity = createEntity();
-// addComponent(world, goldUpgradeEntity, UpgradeComponent, {
+// addComponent(world, UpgradeComponent, goldUpgradeEntity, {
 //   id: 'gold-upgrade-1',
 // });
-// addComponent(world, goldUpgradeEntity, ModifierComponent, {
+// addComponent(world, ModifierComponent, goldUpgradeEntity, {
 //   stat: 'production',
 //   resource: 'gold',
 //   value: 0.5,
 // });
-// addComponent(world, goldUpgradeEntity, CostComponent, {
+// addComponent(world, CostComponent, goldUpgradeEntity, {
 //   resource: 'gold',
 //   base: 100 * RESOURCES_PRECISION,
 //   growth: 1.5,
 // });
-// addComponent(world, goldUpgradeEntity, LimitComponent, {
+// addComponent(world, LimitComponent, goldUpgradeEntity, {
 //   max: 2,
 // });
 

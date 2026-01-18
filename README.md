@@ -100,11 +100,11 @@ const resourceEntity = createEntity();
 const producerEntity = createEntity();
 
 // Add components to entities
-addComponent(world, resourceEntity, ResourceComponent, {
+addComponent(world, ResourceComponent, resourceEntity, {
   amount: 0,
 });
 
-addComponent(world, producerEntity, ProductionComponent, {
+addComponent(world, ProductionComponent, producerEntity, {
   ratePerSecond: 2,
   target: resourceEntity,
 });

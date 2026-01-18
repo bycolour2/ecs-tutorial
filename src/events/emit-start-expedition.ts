@@ -5,7 +5,7 @@ import { Entity, World } from '~/types';
 export function emitStartExpedition(world: World, user: Entity, target: 'crystal' | 'artifact') {
   const eventEntity = createEntity();
 
-  addComponent(world, eventEntity, ExpeditionStartEventComponent, {
+  addComponent(world, ExpeditionStartEventComponent, eventEntity, {
     user,
     target,
   });

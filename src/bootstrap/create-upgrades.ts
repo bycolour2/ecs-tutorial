@@ -10,7 +10,7 @@ import { World } from '~/types';
 export function createUpgrades(world: World) {
   const upgradeEntity = createEntity();
 
-  addComponent(world, upgradeEntity, UpgradeDefinitionComponent, {
+  addComponent(world, UpgradeDefinitionComponent, upgradeEntity, {
     id: 'ore_station_level_2',
     cost: {
       ore: 50,
@@ -19,19 +19,19 @@ export function createUpgrades(world: World) {
     duration: 30,
   });
 
-  addComponent(world, upgradeEntity, UpgradeStateComponent, {
+  addComponent(world, UpgradeStateComponent, upgradeEntity, {
     state: 'available',
   });
 
   const modifierEntity = createEntity();
 
-  addComponent(world, modifierEntity, ModifierComponent, {
+  addComponent(world, ModifierComponent, modifierEntity, {
     target: 'generator_rate',
     resource: 'ore',
     value: 1,
   });
 
-  addComponent(world, modifierEntity, ProvidedByUpgradeComponent, {
+  addComponent(world, ProvidedByUpgradeComponent, modifierEntity, {
     source: upgradeEntity,
   });
 }
