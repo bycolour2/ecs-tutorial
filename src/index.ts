@@ -8,6 +8,8 @@ import {
   registerSingletons,
 } from '~/bootstrap';
 import { ResourceComponent } from '~/components';
+import { emitStartExpedition } from '~/events';
+import { simulate } from '~/game-loop';
 import { getComponent } from '~/lib/component-utils';
 import { createChangesLogger } from '~/lib/logger';
 import { createWorld } from '~/lib/world-utils';
@@ -45,7 +47,7 @@ buildStationSystem(world, 'ore');
 
 logChanges(world);
 
-productionSystem(world, 10000);
+simulate(world, 10_000);
 
 logChanges(world);
 
@@ -53,23 +55,34 @@ sellResourceSystem(world, user, 'ore', 20);
 
 logChanges(world);
 
-resourceClampSystem(world);
-
 purchaseUpgradeSystem(world, user, 'ore_station_level_2');
 
 logChanges(world);
 
-upgradeProgressSystem(world, 10000);
+simulate(world, 10_000);
 
 logChanges(world);
 
-upgradeProgressSystem(world, 50000);
+simulate(world, 50_000);
 
 logChanges(world);
 
-productionSystem(world, 10000);
+simulate(world, 10_000);
 
 logChanges(world);
+
+emitStartExpedition(world, user, 'crystal');
+
+logChanges(world);
+
+simulate(world, 20_000);
+
+logChanges(world);
+
+simulate(world, 40_000);
+
+logChanges(world);
+
 console.log(getPlayerResources(world, user));
 
 // const userEntity = createEntity();

@@ -1,6 +1,13 @@
 import { getSingleton } from '~/lib/singleton-utils';
 import { TimeSingleton } from '~/singletons';
-import { productionSystem, timeSystem } from '~/systems';
+import {
+  expeditionProgressSystem,
+  productionSystem,
+  resourceClampSystem,
+  startExpeditionSystem,
+  timeSystem,
+  upgradeProgressSystem,
+} from '~/systems';
 import { World } from '~/types';
 
 export const TICK_MS = 100;
@@ -8,7 +15,19 @@ export const MAX_TICKS_PER_CALL = 10_000;
 
 export function tick(world: World, deltaMs: number) {
   timeSystem(world, deltaMs);
+
+  // production systems
   productionSystem(world, deltaMs);
+
+  // upgrade systems
+  upgradeProgressSystem(world, deltaMs);
+
+  // expedition systems
+  startExpeditionSystem(world);
+  expeditionProgressSystem(world, deltaMs);
+
+  // resource systems
+  resourceClampSystem(world);
 }
 
 export function simulate(world: World, realDtMs: number) {
