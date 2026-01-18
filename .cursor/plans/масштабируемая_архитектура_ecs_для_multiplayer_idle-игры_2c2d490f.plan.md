@@ -624,22 +624,6 @@ export function rebuildWorld(events: GameEvent[]): World {
 - ✅ Примеры использования (snapshot-example, replay-example)
 - ✅ Модульные тесты (iteration-1.test.ts)
 
-### Итерация 2: Single-player + Backend sync
-
-**Статус**: 🔄 В планах
-
-**Задачи Core Layer**:
-
-- [x] `src/events/types.ts` - Определить все GameEvent types ✅
-- [x] `src/snapshots/create-snapshot.ts` - Serialization API ✅
-- [x] `src/core/lib/deterministic-random.ts` - Seeded random ✅
-
-**Задачи Application Layer**:
-
-- [ ] `src/application/validators/` - Валидаторы для всех events
-- [ ] `src/application/handlers/` - Обработчики для всех events
-- [ ] `src/application/services/world-builder.service.ts` - World reconstruction
-
 ## Результаты тестирования Итерации 1
 
 ### Тест Snapshot API
@@ -716,6 +700,22 @@ pnpm run test:iteration-1   # Запуск тестов
 ```
 
 **Итерация 1 успешно завершена!** Создана фундаментальная инфраструктура для следующих итераций с backend-синхронизацией и multiplayer-функционалом.
+
+### Итерация 2: Single-player + Backend sync
+
+**Статус**: 🔄 В планах
+
+**Задачи Core Layer**:
+
+- ✅ `src/events/types.ts` - Определить все GameEvent types
+- ✅ `src/snapshots/create-snapshot.ts` - Serialization API
+- ✅ `src/core/lib/deterministic-random.ts` - Seeded random
+
+**Задачи Application Layer**:
+
+- [ ] `src/application/validators/` - Валидаторы для всех events
+- [ ] `src/application/handlers/` - Обработчики для всех events
+- [ ] `src/application/services/world-builder.service.ts` - World reconstruction
 
 **Задачи Infrastructure Layer**:
 

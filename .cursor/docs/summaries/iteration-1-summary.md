@@ -85,14 +85,11 @@ Total: 5/5 tests passed
 
 ### Детерминизм replay
 
-Все тесты проходят успешно! Event replay framework полностью детерминирован:
-- Replay framework корректно обрабатывает события в хронологическом порядке
-- Entity ID синхронизация реализована через функцию `resetEntityId()`
+Все тесты проходят успешно! Event replay framework теперь полностью детерминирован:
+- Replay framework корректно обрабатывает события
+- Синхронизация entity ID полностью реализована через функцию `resetEntityId`
 - Два последовательных replay одних и тех же событий создают идентичные snapshots
-- Simulation time вычисляется корректно (время между последним событием и текущим моментом)
-- Это обеспечивает надежную основу для multiplayer-синхронизации и backend-синхронизации в следующих итерациях
-
-Ключевое достижение: **функция `resetEntityId()` гарантирует, что при каждом replay entity ID генерируются в том же порядке**, что обеспечивает полную детерминизацию мира.
+- Это обеспечивает надежную основу для multiplayer-синхронизации в следующих итерациях
 
 ## Используемая симуляция в `src/index.ts`
 
@@ -151,12 +148,8 @@ src/
 **Задачи Core Layer:**
 - [x] `src/events/types.ts` - Определить все GameEvent types ✅
 - [x] `src/snapshots/create-snapshot.ts` - Serialization API ✅
-- [x] `src/snapshots/restore-snapshot.ts` - Deserialization API ✅
-- [x] `src/lib/deterministic-random.ts` - Seeded random ✅
+- [x] `src/core/lib/deterministic-random.ts` - Seeded random ✅
 - [x] Event replay testing framework ✅ (полностью детерминирован)
-- [x] `src/lib/world-utils.ts` - Добавлена функция `resetEntityId()` для синхронизации ID ✅
-- [x] Примеры использования (snapshot-example, replay-example) ✅
-- [x] Модульные тесты (iteration-1.test.ts) ✅ (5/5 тестов прошли успешно)
 
 **Задачи Application Layer:**
 - [ ] `src/application/validators/` - Валидаторы для всех events
@@ -182,25 +175,14 @@ src/
 Итерация 1 успешно завершена! Все тесты проходят (5/5).
 
 Создана фундаментальная инфраструктура для:
-- Сериализации и десериализации мира (Snapshot API)
-- Типизации игровых событий (GameEvent union type)
-- Детерминистичной генерации случайных чисел (Seeded Random с LCG алгоритмом)
+- Сериализации и десериализации мира
+- Типизации игровых событий
+- Детерминистичной генерации случайных чисел
 - Полностью детерминированного replay событий для тестирования и отладки
 
 **Ключевые достижения:**
-- **Event replay framework обеспечивает 100% детерминизм** - два replay одних и тех же событий создают идентичные snapshots
-- Entity ID синхронизация работает корректно через `resetEntityId()` - гарантирует одинаковый порядок генерации entity ID
+- Event replay framework теперь обеспечивает 100% детерминизм
+- Entity ID синхронизация работает корректно через `resetEntityId()`
 - Все компоненты Core Layer полностью протестированы и готовы к использованию
-- Создан надежный фундамент для реализации backend-синхронизации (Event Sourcing pattern)
-- Подготовлена база для multiplayer-функционала в следующих итерациях
-
-**Готовность к Итерации 2 (Single-player + Backend sync):**
-
-Все задачи Core Layer выполнены:
-- ✅ Event types определены и протестированы
-- ✅ Snapshot API полностью функционален
-- ✅ Deterministic random реализован
-- ✅ Event replay framework детерминирован
-- ✅ Entity ID синхронизация работает
 
 Это надежная основа для реализации backend-синхронизации и multiplayer-функционала в следующих итерациях.

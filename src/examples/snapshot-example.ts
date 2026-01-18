@@ -1,17 +1,16 @@
-import { createSnapshot } from '../snapshots/create-snapshot';
-import { restoreSnapshot } from '../snapshots/restore-snapshot';
+import { createSnapshot, restoreSnapshot } from '~/snapshots';
 import {
   registerComponents,
   registerSingletons,
   createUser,
   createUserResources,
   createExtractionStations,
-} from '../bootstrap';
-import { createWorld } from '../lib/world-utils';
-import { simulate } from '../game-loop';
-import { OwnedByComponent, ResourceComponent } from '../components';
-import { getComponent } from '../lib/component-utils';
-import { Entity, World } from '../types';
+} from '~/bootstrap';
+import { createWorld } from '~/lib/world-utils';
+import { simulate } from '~/game-loop';
+import { OwnedByComponent, ResourceComponent } from '~/components';
+import { getComponent } from '~/lib/component-utils';
+import { Entity, World } from '~/types';
 
 /**
  * Пример использования Snapshot API для сериализации и десериализации мира

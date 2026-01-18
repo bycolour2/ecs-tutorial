@@ -1,7 +1,7 @@
-import { replayEvents, createReplayLogger } from '../lib/event-replay';
-import { createSnapshot } from '../snapshots/create-snapshot';
-import type { GameEvent } from '../events/types';
-import { resetEntityId } from '../lib/world-utils';
+import { replayEvents, createReplayLogger } from '~/lib/event-replay';
+import { createSnapshot } from '~/snapshots/create-snapshot';
+import type { GameEvent } from '~/events/types';
+import { resetEntityId } from '~/lib/world-utils';
 
 /**
  * Пример использования Event Replay Framework

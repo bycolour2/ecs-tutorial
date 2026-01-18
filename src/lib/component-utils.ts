@@ -62,12 +62,4 @@ export function resetAllRegisteredComponents() {
   console.warn('resetAllRegisteredComponents: Components are created as global constants and cannot be reset directly. Use clearAllComponents(world) instead.');
 }
 
-/**
- * Сбрасывает все зарегистрированные компоненты по их именам.
- * Полезно для детерминизма при replay.
- */
-export function clearComponentStores(world: World) {
-  for (const component of world.components.values()) {
-    component.store.clear();
-  }
-}
+

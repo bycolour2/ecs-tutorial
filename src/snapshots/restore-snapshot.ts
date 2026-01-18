@@ -1,5 +1,5 @@
 import { Component, World, WorldSnapshot } from '~/types';
-import { resetEntityId, createEntity } from '../lib/world-utils';
+import { resetEntityId, createEntity } from '~/lib/world-utils';
 
 export function restoreSnapshot(snapshot: WorldSnapshot): World {
   const world: World = {
