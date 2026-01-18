@@ -2,7 +2,9 @@ import { createComponent } from '~/lib/component-utils';
 
 export const RESOURCES_PRECISION = 1000;
 
-export type ResourceType = 'ore' | 'energy' | 'food' | 'money' | 'crystal' | 'artifact';
+export type BaseResourceType = 'ore' | 'energy' | 'food' | 'money';
+export type SpecialResourceType = 'crystal' | 'artifact';
+export type ResourceType = BaseResourceType | SpecialResourceType;
 
 export type Resource = {
   type: ResourceType;

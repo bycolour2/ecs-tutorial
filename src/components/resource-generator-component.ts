@@ -1,4 +1,4 @@
-import { ResourceType } from '~/components/resource-component';
+import { ResourceType } from '~/components';
 import { createComponent } from '~/lib/component-utils';
 
 export type ResourceGenerator = {

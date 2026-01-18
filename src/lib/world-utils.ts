@@ -27,3 +27,9 @@ export function addComponent<T>(world: World, entity: Entity, component: Compone
 export function removeComponent<T>(world: World, entity: Entity, component: Component<T>) {
   component.store.delete(entity);
 }
+
+export function removeEntity(world: World, entity: Entity) {
+  for (const component of world.components.values()) {
+    component.store.delete(entity);
+  }
+}

@@ -16,9 +16,7 @@ export function collectActiveModifiers(world: World): Modifier[] {
     ModifierComponent,
     ProvidedByUpgradeComponent,
   )) {
-    // const state = world.components.UpgradeState?.get(providedBy.source);
     const state = getComponentValue(world, UpgradeStateComponent, providedBy.source);
-    console.log('🚀 ~ collectActiveModifiers ~ state:', state);
 
     if (!state) continue;
     if (state.state !== 'completed') continue;
