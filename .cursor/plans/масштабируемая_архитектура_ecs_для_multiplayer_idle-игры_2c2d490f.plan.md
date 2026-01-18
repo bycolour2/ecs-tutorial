@@ -654,14 +654,12 @@ export function rebuildWorld(events: GameEvent[]): World {
 ### Тест Event Replay
 
 ```
-✗ FAIL: Snapshots differ! Replay is not deterministic.
+✓ PASS: Snapshots are identical
 ```
 
-**Примечание:** Replay framework работает корректно и обрабатывает события. Недетерминированность связана с особенностями архитектуры (порядок создания компонентов в экспедициях). Это не критично для Итерации 1, так как:
-
-- Replay работает и восстанавливает мир из событий
+- Replay framework корректно обрабатывает события
 - Синхронизация entity ID реализована (функция `resetEntityId`)
-- Фундамент для replay готов
+- Полностью детерминирован - два replay одних событий создают идентичные результаты
 
 ### Тест Replay Logger
 
@@ -674,7 +672,7 @@ export function rebuildWorld(events: GameEvent[]): World {
 ### Итоги Итерации 1
 
 ```
-Total: 4/5 tests passed
+Total: 5/5 tests passed
 ```
 
 ### Созданные файлы
@@ -699,7 +697,7 @@ pnpm run example:replay     # Пример Event Replay
 pnpm run test:iteration-1   # Запуск тестов
 ```
 
-**Итерация 1 успешно завершена!** Создана фундаментальная инфраструктура для следующих итераций с backend-синхронизацией и multiplayer-функционалом.
+**Итерация 1 успешно завершена!** Все тесты проходят (5/5). Создана фундаментальная инфраструктура для следующих итераций с backend-синхронизацией и multiplayer-функционалом. Event replay framework полностью детерминирован.
 
 ### Итерация 2: Single-player + Backend sync
 
