@@ -1,8 +1,8 @@
-import { ResourceType } from '~/components';
+import { BaseResourceType } from '~/components';
 import { createComponent } from '~/lib/component-utils';
 
 export type ExtractionStation = {
-  resource: ResourceType;
+  resource: BaseResourceType;
   level: number;
   built: boolean;
 };

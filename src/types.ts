@@ -16,3 +16,13 @@ export type World = {
   components: Map<string, Component<any>>;
   singletons: Map<string, unknown>;
 };
+
+export type ComponentData = {
+  name: string;
+  data: Record<Entity, unknown>;
+};
+
+export type WorldSnapshot = {
+  components: ComponentData[];
+  singletons: Record<string, unknown>;
+};

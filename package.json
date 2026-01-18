@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "example:snapshot": "ts-node -r tsconfig-paths/register src/examples/snapshot-example.ts",
+    "example:replay": "ts-node -r tsconfig-paths/register src/examples/replay-example.ts",
+    "test:iteration-1": "ts-node -r tsconfig-paths/register src/tests/iteration-1.test.ts"
   },
   "keywords": [],
   "author": "",

@@ -6,6 +6,14 @@ export function createEntity(): Entity {
   return nextEntityId++;
 }
 
+/**
+ * Сбрасывает счетчик entity ID.
+ * Полезно для тестов и replay детерминизма.
+ */
+export function resetEntityId() {
+  nextEntityId = 1;
+}
+
 export function createWorld(components?: Component<any>[]): World {
   if (!components) {
     return {
