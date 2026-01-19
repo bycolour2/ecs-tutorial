@@ -8,21 +8,21 @@
  * - Event replay framework (replay событий)
  */
 
-import { createSnapshot, restoreSnapshot } from '../snapshots';
-import { replayEvents, createReplayLogger } from '../lib/event-replay';
-import { createSeededRandom } from '../lib/deterministic-random';
+import { createSnapshot, restoreSnapshot } from '~/snapshots';
+import { replayEvents, createReplayLogger } from '~/lib/event-replay';
+import { createSeededRandom } from '~/lib/deterministic-random';
 import {
   registerComponents,
   registerSingletons,
   createUser,
   createUserResources,
   createExtractionStations,
-} from '../bootstrap';
-import { createWorld, resetEntityId } from '../lib/world-utils';
-import { simulate } from '../game-loop';
-import { ResourceComponent } from '../components';
-import { getComponent } from '../lib/component-utils';
-import type { GameEvent } from '../events/types';
+} from '~/bootstrap';
+import { createWorld, resetEntityId } from '~/lib/world-utils';
+import { simulate } from '~/game-loop';
+import { ResourceComponent } from '~/components';
+import { getComponent } from '~/lib/component-utils';
+import type { GameEvent } from '~/events/types';
 
 /**
  * Тест Snapshot API

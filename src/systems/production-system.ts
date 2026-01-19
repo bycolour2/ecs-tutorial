@@ -4,7 +4,7 @@ import {
   OwnedByComponent,
   ResourceComponent,
   ResourceGeneratorComponent,
-} from '../components';
+} from '~/components';
 import { World } from '~/types';
 import { collectActiveModifiers } from '~/selectors';
 
