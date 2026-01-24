@@ -8,13 +8,13 @@ import {
   registerSingletons,
 } from '~/bootstrap';
 import { ResourceComponent } from '~/components';
-import { emitStartExpedition } from '~/events';
+import { emitBuildStation, emitStartExpedition } from '~/events';
 import { simulate } from '~/game-loop';
 import { getComponent } from '~/lib/component-utils';
 import { createChangesLogger } from '~/lib/logger';
 import { createWorld } from '~/lib/world-utils';
 import { getPlayerResources } from '~/snapshots';
-import { buildStationSystem, purchaseUpgradeSystem, sellResourceSystem } from '~/systems';
+import { purchaseUpgradeSystem, sellResourceSystem } from '~/systems';
 
 const world = createWorld();
 
@@ -36,7 +36,7 @@ for (const [, res] of getComponent(world, ResourceComponent) ?? []) {
 
 logChanges(world);
 
-buildStationSystem(world, 'ore');
+emitBuildStation(world, user, 'ore');
 
 logChanges(world);
 

@@ -18,3 +18,4 @@ export * from './expedition-component';
 export * from './expedition-progress-component';
 export * from './expedition-reward-component';
 export * from './expedition-start-event-component';
+export * from './build-station-event-component';

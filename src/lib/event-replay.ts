@@ -1,8 +1,7 @@
 import { UserComponent } from '~/components';
-import { GameEvent } from '~/events';
-import { buildStationSystem, purchaseUpgradeSystem, sellResourceSystem } from '~/systems';
+import { GameEvent, emitBuildStation, emitStartExpedition } from '~/events';
+import { purchaseUpgradeSystem, sellResourceSystem } from '~/systems';
 import { simulate } from '~/game-loop';
-import { emitStartExpedition } from '~/events';
 import { registerComponents, registerSingletons } from '~/bootstrap';
 import { createWorld, resetEntityId, createEntity } from '~/lib/world-utils';
 import { clearAllComponents } from '~/lib/component-utils';
@@ -89,7 +88,7 @@ export function replayEvents(events: GameEvent[], options?: ReplayOptions): Repl
 function applyEvent(world: World, userEntity: Entity, event: GameEvent) {
   switch (event.type) {
     case 'BUILD_STATION':
-      buildStationSystem(world, event.stationType);
+      emitBuildStation(world, userEntity, event.stationType);
       break;
 
     case 'SELL_RESOURCE':

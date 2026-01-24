@@ -17,7 +17,7 @@ import {
 import { TimeSingleton } from '~/singletons';
 import { World } from '~/types';
 import { getComponent, getComponentValue } from './component-utils';
-import { getProductionMultiplier } from './selectors';
+// import { getProductionMultiplier } from './selectors';
 import { getSingleton } from './singleton-utils';
 
 function formatNumber(value: number, precision = 2): string {

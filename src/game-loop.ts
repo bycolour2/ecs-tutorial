@@ -4,6 +4,7 @@ import {
   expeditionProgressSystem,
   productionSystem,
   resourceClampSystem,
+  startBuildStationSystem,
   startExpeditionSystem,
   timeSystem,
   upgradeProgressSystem,
@@ -15,6 +16,9 @@ export const MAX_TICKS_PER_CALL = 10_000;
 
 export function tick(world: World, deltaMs: number) {
   timeSystem(world, deltaMs);
+
+  // station systems
+  startBuildStationSystem(world);
 
   // production systems
   productionSystem(world, deltaMs);
